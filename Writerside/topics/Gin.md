@@ -40,8 +40,8 @@ import (
     "log"
 
     "github.com/go-advanced-admin/admin"
-    "github.com/go-advanced-admin/web-gin"
-    "github.com/go-advanced-admin/orm-gorm"
+    admingin "github.com/go-advanced-admin/web-gin"
+    admingorm "github.com/go-advanced-admin/orm-gorm"
     "github.com/gin-gonic/gin"
     "gorm.io/driver/sqlite"
     "gorm.io/gorm"
@@ -94,6 +94,9 @@ func main() {
 
 ## Using the Gin Integration
 
+> The code examples in this section are based on the `admingin` integration gist provided.
+
+
 ### Handling Routes
 
 The Gin integrator handles route registration by mapping admin panel routes to Gin handlers. When you use the 
@@ -106,6 +109,7 @@ func (i *Integrator) HandleRoute(method, path string, handler admin.HandlerFunc)
         code, body := handler(c)
         if slices.Contains(codes, int(code)) {
             c.Redirect(int(code), body)
+            return
         }
 
         c.Data(int(code), "text/html; charset=utf-8", []byte(body))
@@ -113,11 +117,11 @@ func (i *Integrator) HandleRoute(method, path string, handler admin.HandlerFunc)
 }
 ```
 
-This method ensures that HTTP responses from the admin panel are correctly handled within the Gin framework.
+This method ensures that HTTP responses from the admin panel are correctly handled within the Gin framework. It checks for redirect status codes and uses `c.Redirect` accordingly. For other status codes, it sends the response body as HTML data.
 
 ### Serving Static Assets
 
-To serve static assets (like CSS and JavaScript files) required by the admin panel, use the `ServeAssets` method:
+To serve static assets (like CSS and JavaScript files) required by the admin panel, use the `ServerAssets` method:
 
 ```go
 func (i *Integrator) ServerAssets(prefix string, renderer admin.TemplateRenderer) {
@@ -139,12 +143,12 @@ func (i *Integrator) ServerAssets(prefix string, renderer admin.TemplateRenderer
 }
 ```
 
-This method uses the `admin.TemplateRenderer` to retrieve asset files and serves them through Gin's routing system.
+This method uses the `admin.TemplateRenderer` to retrieve asset files and serves them through Gin's routing system. It dynamically determines the content type based on the file extension and defaults to `application/octet-stream` if the content type cannot be determined.
 
 ### Extracting Request Data
 
 The Gin integrator provides methods to extract query parameters, path parameters, request methods, and form data from 
-the Gin context:
+the Gin context. These methods are used by the admin panel to handle HTTP requests and extract necessary data for processing.
 
 ```go
 func (i *Integrator) GetQuery(ctx interface{}, name string) string {
@@ -182,8 +186,6 @@ func (i *Integrator) GetFormData(ctx interface{}) map[string][]string {
     return c.Request.Form
 }
 ```
-
-These methods are used by the admin panel to handle HTTP requests and extract necessary data for processing.
 
 ## Customizing the Gin Integration
 
