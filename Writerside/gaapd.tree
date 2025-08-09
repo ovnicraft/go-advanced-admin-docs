@@ -15,10 +15,10 @@
             <toc-element topic="XORM-Quick-Start.md"/>
         </toc-element>
         <toc-element topic="Web-Framework-Specific-Quick-Starts.md">
+            <toc-element topic="Chi-Quick-Start.md"/>
             <toc-element topic="Echo-Quick-Start.md"/>
             <toc-element topic="Fiber-Quick-Start.md"/>
             <toc-element topic="Gin-Quick-Start.md"/>
-            <toc-element topic="Chi-Quick-Start.md"/>
         </toc-element>
     </toc-element>
     <toc-element topic="Integrations.md">
@@ -31,9 +31,9 @@
         </toc-element>
         <toc-element topic="Web.md">
             <toc-element topic="Chi.md"/>
-            <toc-element topic="Gin.md"/>
             <toc-element topic="Echo.md"/>
             <toc-element topic="Fiber.md"/>
+            <toc-element topic="Gin.md"/>
             <toc-element topic="Building-a-Custom-Web-Framework-Integration.md"/>
         </toc-element>
     </toc-element>
